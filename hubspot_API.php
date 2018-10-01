@@ -1,18 +1,27 @@
 <?php
 
-// The number after 5 on gform_after_submission_5 is the ID or the form you want to target
+/*
+
+To use, copy this code into your functions.php file of your wordpress theme file and make a few edits to target your gravity forms
+
+If you dont want to copy the code, just require or include this file in your functions.php file.
+
+*/
+
+
+// The number 5 on gform_after_submission_5 is the ID or the form you want to target
 add_action( 'gform_after_submission_5', 'post_to_third_party', 10, 2 );
 function post_to_third_party( $entry, $form ) {
 
 
-            // HUBSPOT API KEY
-            $hapikey='082a937c-533f-4f8d-8621-2b13559d0480';
+            //YOUR HUBSPOT API KEY
+            $hapikey='';
 
             /****************************
                 GET DATA FROM THE FORM
             *****************************/
 
-            // The numbers on rgar( $entry, '21' )... Are the field numbers of the form you want to submit
+            // The number 21 on rgar( $entry, '21' )... is the field number of the form you want to submit
 
             // Contact details
             $company_name = rgar( $entry, '21' );
