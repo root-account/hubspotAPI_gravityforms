@@ -39,7 +39,6 @@ function post_to_third_party( $entry, $form ) {
             $deal_amount = rgar( $entry, '13' );
 
 
-
             /****************************
                 CREATE A NEW CONTACT
             *****************************/
