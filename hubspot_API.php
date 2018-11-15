@@ -211,4 +211,53 @@ function post_to_third_party( $entry, $form ) {
 
 
 
+
+
+
+
+        /*******************************************
+         SUBMIT TO A CUSTOM FORM CREATED IN HUBSPOT
+        ********************************************/
+
+        //Process a new form submission in HubSpot in order to create a new Contact.
+
+        $hubspotutk      = $_COOKIE['hubspotutk']; //grab the cookie from the visitors browser.
+        $ip_addr         = $_SERVER['REMOTE_ADDR']; //IP address too.
+        $hs_context      = array(
+            'hutk' => $hubspotutk,
+            'ipAddress' => $ip_addr,
+            'pageUrl' => 'https://vumelafund.com/get-funded/',
+            'pageName' => 'Get Funded'
+        );
+        $hs_context_json = json_encode($hs_context);
+
+        //Need to populate these variable with values from the form.
+        $str_post = "firstname=" . urlencode($contact_fname) 
+                    . "&lastname=" . urlencode($contact_sname)  
+                    . "&phone=" . urlencode($contact_phone)  
+                    . "&email=" . urlencode($contact_email)  
+                    . "&hs_context=" . urlencode($hs_context_json); //Leave this one be
+
+        //https://share.hsforms.com/
+        //replace the values in this URL with your portal ID and your form GUID
+
+        $endpoint = 'https://forms.hubspot.com/uploads/form/v2/2937431/167f79f7-e6b1-49c1-80a1-6bbcf0aa9d60';
+
+        $ch = @curl_init();
+        @curl_setopt($ch, CURLOPT_POST, true);
+        @curl_setopt($ch, CURLOPT_POSTFIELDS, $str_post);
+        @curl_setopt($ch, CURLOPT_URL, $endpoint);
+        @curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+            'Content-Type: application/x-www-form-urlencoded'
+        ));
+        @curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $response    = @curl_exec($ch); //Log the response from HubSpot as needed.
+        $status_code = @curl_getinfo($ch, CURLINFO_HTTP_CODE); //Log the response status code
+        @curl_close($ch);
+        echo $status_code . " " . $response;
+
+
+
+
+
 }
